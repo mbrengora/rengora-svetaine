@@ -448,7 +448,9 @@ document.getElementById('q').addEventListener('submit',e=>{
   if(dv){const d=new Date(dv+'T12:00');document.getElementById('q-date-lt').value=`${d.getFullYear()} m. ${M[d.getMonth()]} ${d.getDate()} d. (${D[d.getDay()]})`}else{document.getElementById('q-date-lt').value='Nenurodyta'}
   document.getElementById('q-replyto').value=document.getElementById('q-email').value.trim();
   const who=document.getElementById('q-name').value.trim();
-  f_subj.value='Nauja užklausa: '+(who||'klientas')+(dv?' · '+document.getElementById('q-date-lt').value.replace(/ \(.*\)/,''):'');
+  const n=new Date(),p2=x=>String(x).padStart(2,'0');
+  const qid=p2(n.getMonth()+1)+p2(n.getDate())+'-'+p2(n.getHours())+p2(n.getMinutes())+p2(n.getSeconds());
+  f_subj.value='Užklausa #'+qid+': '+(who||'klientas')+(dv?' · '+document.getElementById('q-date-lt').value.replace(/ \(.*\)/,''):'');
   if(live){try{localStorage.removeItem('rengora-bag')}catch(_){};return}
   e.preventDefault();
   const v=id=>document.getElementById(id).value.trim();

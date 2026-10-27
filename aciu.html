@@ -1,25 +1,21 @@
 <!doctype html>
 <html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ačiū – RENGORA</title>
+<title>Dėkojame – RENGORA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;1,6..96,500&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: rental catalogue — product grid with photo + price on every card, a running inquiry list instead of a cart */
+/* Palette: white catalogue, Porsche racing green for bands and buttons, brass for accents. Single light look by choice. */
 :root{
-  --paper:#F5F2EE; --card:#FFFFFF; --ink:#2B1F19; --espresso:#3B2A22; --brass:#9C7A45; --brass-soft:#E9DFCE;
-  --muted:#7C6F65; --line:#E2D9CD; --on-dark:#F3EBDF;
+  --paper:#FFFFFF; --card:#F6F5F1; --ink:#1A2A21; --espresso:#1F3B2C; --brass:#A8844A; --brass-soft:#F1ECE1;
+  --muted:#5F6862; --line:#E4E2DC; --on-dark:#F3F0E8;
   --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
   --s1:1.2rem; --s2:1.6rem; --s3:clamp(1.9rem,3.6vw,2.7rem); --s4:clamp(2.4rem,5.6vw,4.2rem);
   --wrap:1200px;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#1B1411; --card:#251B16; --ink:#F1E8DC; --espresso:#120D0B; --brass:#C9A86F; --brass-soft:#3A2C21;
-  --muted:#AE9F92; --line:#3A2D25; --on-dark:#F3EBDF; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#1B1411; --card:#251B16; --ink:#F1E8DC; --espresso:#120D0B; --brass:#C9A86F; --brass-soft:#3A2C21;
-  --muted:#AE9F92; --line:#3A2D25; --on-dark:#F3EBDF; color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
@@ -54,7 +50,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .hero{padding-block:clamp(32px,5vw,56px) clamp(40px,6vw,72px)}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
 .hero h1{font-size:var(--s4);letter-spacing:-.01em}
-.hero h1 em{font-style:italic;color:var(--brass)}
+.hero h1 em{font-style:italic;color:var(--espresso)}
 .hero p.lede{font-size:1.15rem;color:var(--muted);max-width:40ch;margin:18px 0 26px}
 .occasions{display:flex;flex-wrap:wrap;gap:8px}
 .occasions a{padding:8px 14px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:.88rem;background:var(--card)}
@@ -74,7 +70,9 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
 .prod{display:grid;grid-template-rows:auto 1fr;background:var(--paper);border:1px solid var(--line)}
 .ph{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--brass-soft)}
+.ph.white{background:#fff}
 .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.ph.fit img{object-fit:contain;padding:6%}
 .prod:hover .ph img{transform:scale(1.04)}
 .ph svg{position:absolute;inset:0;margin:auto;width:56%;height:56%;color:var(--brass)}
 .ph .soon{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:.75rem;color:var(--muted)}
@@ -83,16 +81,24 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .pbody{display:grid;gap:8px;padding:16px;align-content:start}
 .pbody h3{font-size:1.25rem}
 .pbody .spec{margin:0;color:var(--muted);font-size:.88rem;min-height:2.6em}
-.opt{display:flex;align-items:center;gap:8px;font-size:.86rem;color:var(--ink)}
-.opt input{accent-color:var(--brass);width:16px;height:16px}
-.prow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px;padding-top:12px;border-top:1px solid var(--line)}
+.opt{display:grid;gap:6px;font-size:.86rem;color:var(--muted);min-width:0}
+.prod,.pbody{min-width:0}
+.opt select{font:inherit;font-size:.88rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:8px;width:100%;min-width:0}
+.prow{display:grid;gap:12px;margin-top:4px;padding-top:12px;border-top:1px solid var(--line)}
 .price{font-family:var(--display);font-size:1.45rem;font-variant-numeric:lining-nums tabular-nums;line-height:1}
+.cur{font-family:var(--body);font-weight:500;font-size:.74em;margin-left:.18em;letter-spacing:0;vertical-align:.12em}
 .price small{font-family:var(--body);font-size:.75rem;color:var(--muted);margin-left:3px}
 .price.ask{font-size:1rem;font-family:var(--body);font-weight:600;color:var(--brass)}
-.add{display:flex;align-items:center;gap:6px}
-.qty{width:58px;font:inherit;font-size:.9rem;padding:7px 6px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-align:center;font-variant-numeric:tabular-nums}
+.add{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.add .btn{justify-content:center}
+.add input.qty{width:80px;background:var(--card)}
+.qty::-webkit-inner-spin-button,.qty::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.qty{-moz-appearance:textfield;appearance:textfield}
+.qty{width:72px;font:inherit;font-size:.95rem;padding:9px 8px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-align:center;font-variant-numeric:tabular-nums}
 .btn{font:inherit;font-weight:600;font-size:.88rem;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:8px 12px;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
 .btn:hover{background:var(--brass);border-color:var(--brass);color:#fff}
+.btn{background:var(--espresso);border-color:var(--espresso)}
+.btn.ghost{background:transparent;color:var(--espresso);border-color:var(--espresso)}
 .btn.ghost{background:transparent;color:var(--ink)}
 .btn.big{padding:13px 20px;font-size:.95rem}
 .added{font-size:.78rem;color:var(--brass);min-height:1.2em;margin:0}
@@ -103,9 +109,13 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .note{color:var(--muted);font-size:.85rem;margin-top:14px}
 
 /* packages */
-.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.pack{background:var(--card);border:1px solid var(--line);padding:24px;display:grid;gap:12px;align-content:start}
-.pack.best{border-color:var(--brass)}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.pack{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;box-shadow:0 8px 24px rgba(26,42,33,.08);display:grid}
+.pack.best{border-color:var(--brass);box-shadow:0 14px 34px rgba(26,42,33,.14)}
+.pack>img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.pack .in{position:relative;padding:26px 22px 22px;display:grid;gap:12px;align-content:start}
+.pack .tag{position:absolute;top:-15px;left:22px;background:var(--espresso);color:var(--on-dark);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:7px 11px}
+.pack.best .tag{background:var(--brass)}
 .pack h3{font-size:var(--s2)}
 .pack ul{list-style:none;margin:0;padding:0;display:grid;gap:5px;color:var(--muted);font-size:.93rem}
 .pack li::before{content:"—";color:var(--brass);margin-right:8px}
@@ -113,12 +123,13 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:va
 .pack .tot b{font-family:var(--display);font-size:2rem;font-weight:500;font-variant-numeric:lining-nums tabular-nums}
 .pack .tot s,.pack .tot span{color:var(--muted);font-size:.85rem}
 .pack .fine{margin:0;color:var(--muted);font-size:.8rem}
+.pack .btn{justify-self:start}
 @media (max-width:900px){.packs{grid-template-columns:1fr;max-width:520px}}
 
 /* gallery */
 #darbai{background:var(--espresso);color:var(--on-dark)}
 #darbai .head p{color:rgba(243,235,223,.7)}
-#darbai .eyebrow{color:#C9A86F}
+#darbai .eyebrow{color:#D2B47E}
 .gal{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .gal figure{margin:0;display:grid;gap:8px}
 .gal img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
@@ -170,6 +181,6 @@ footer .logo{color:var(--on-dark);font-size:1.2rem}
 </style></head><body>
 <header><div class="wrap nav"><a class="logo" href="/">RENGORA</a></div></header>
 <main><section class="hero"><div class="wrap" style="max-width:720px;display:grid;gap:18px">
-<p class="eyebrow">Užklausa gauta</p><h1 style="font-size:var(--s3)">Ačiū! Netrukus susisieksime.</h1>
+<p class="eyebrow">Užklausa gauta</p><h1 style="font-size:var(--s3)">Dėkojame! Netrukus susisieksime.</h1>
 <p style="color:var(--muted);margin:0">Jei renginys skubus, skambinkite +370 639 11899.</p>
 <p><a class="btn big" href="/">Grįžti į katalogą</a></p></div></section></main></body></html>
