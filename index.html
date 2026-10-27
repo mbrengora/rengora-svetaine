@@ -324,23 +324,26 @@ footer .logo{color:var(--on-dark);font-size:1.2rem}
           <div class="total"><span>Preliminari suma<small>be PVM ir transporto</small></span><b id="total">0<span class="cur">€</span></b></div>
         </div>
         <form id="q" name="uzklausa" method="POST" action="https://formsubmit.co/mbrengora@gmail.com">
-          <input type="hidden" name="_subject" value="Nauja užklausa iš rengora.lt">
+          <input type="hidden" name="_subject" id="q-subject" value="Nauja užklausa iš rengora.lt">
           <input type="hidden" name="_next" value="https://rengora.lt/aciu.html">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="iranga" id="q-items">
+          <input type="hidden" name="Užsakyta įranga" id="q-items">
+          <input type="hidden" name="Preliminari suma" id="q-sum">
+          <input type="hidden" name="Renginio data" id="q-date-lt">
+          <input type="hidden" name="_replyto" id="q-replyto">
           <p hidden><label>Nepildykite<input name="_honey"></label></p>
           <div class="r2">
-            <label for="q-date">Renginio data<input id="q-date" name="data" type="date"></label>
-            <label for="q-guests">Svečių skaičius<input id="q-guests" name="sveciai" type="number" min="1" placeholder="pvz. 80"></label>
+            <label for="q-date">Renginio data<input id="q-date" type="date"></label>
+            <label for="q-guests">Svečių skaičius<input id="q-guests" name="Svečių skaičius" type="number" min="1" placeholder="pvz. 80"></label>
           </div>
-          <label for="q-place">Vieta<input id="q-place" name="vieta" type="text" placeholder="Miestas, adresas ar erdvė"></label>
+          <label for="q-place">Vieta<input id="q-place" name="Renginio vieta" type="text" placeholder="Miestas, adresas ar erdvė"></label>
           <div class="r2">
-            <label for="q-name">Vardas, įmonė<input id="q-name" name="vardas" type="text" required></label>
-            <label for="q-phone">Telefonas<input id="q-phone" name="telefonas" type="tel" required></label>
+            <label for="q-name">Vardas, įmonė<input id="q-name" name="Klientas" type="text" required></label>
+            <label for="q-phone">Telefonas<input id="q-phone" name="Telefonas" type="tel" required></label>
           </div>
-          <label for="q-email">El. paštas<input id="q-email" name="email" type="email"></label>
-          <label for="q-note">Pastabos<textarea id="q-note" name="pastabos" rows="3" placeholder="Laikas, aukštas, montavimas..."></textarea></label>
+          <label for="q-email">El. paštas<input id="q-email" name="El. paštas" type="email"></label>
+          <label for="q-note">Pastabos<textarea id="q-note" name="Pastabos" rows="3" placeholder="Laikas, aukštas, montavimas..."></textarea></label>
           <button class="btn big" type="submit">Siųsti užklausą</button>
           <div class="out" id="out" hidden>
             <pre id="out-text"></pre>
@@ -409,7 +412,9 @@ function render(){
   document.getElementById('empty').hidden=bag.length>0;
   document.getElementById('total').innerHTML=num(bag.reduce((s,b)=>s+(b.unit||0)*b.qty,0))+'<span class="cur">€</span>';
   document.getElementById('bag-n').textContent=bag.length;
-  document.getElementById('q-items').value=bag.map(b=>`${b.name} × ${b.qty}${b.unit!=null?' ('+eur(b.unit*b.qty)+')':''}`).join('; ');
+  document.getElementById('q-items').value=bag.length?bag.map((b,i)=>`${i+1}) ${b.name} – ${b.qty} vnt.${b.unit!=null?' × '+eur(b.unit)+' = '+eur(b.unit*b.qty):' (kaina derinama)'}`).join('   '):'Nepasirinkta';
+  const sum=bag.reduce((s,b)=>s+(b.unit||0)*b.qty,0);
+  document.getElementById('q-sum').value=eur(sum)+' be PVM ('+eur(Math.round(sum*121)/100)+' su PVM), be transporto';
 }
 function addItem(name,qty,u,img){
   const ex=bag.find(b=>b.name===name&&b.unit===u);
@@ -434,8 +439,16 @@ fbtn.forEach(b=>b.addEventListener('click',()=>filter(b.dataset.f)));
 document.querySelectorAll('[data-jump]').forEach(a=>a.addEventListener('click',()=>filter(a.dataset.jump)));
 
 const live=/rengora\.lt$|github\.io$/.test(location.hostname);
+const f_subj=document.getElementById('q-subject');
 document.getElementById('q').addEventListener('submit',e=>{
   render();
+  const M=['sausio','vasario','kovo','balandžio','gegužės','birželio','liepos','rugpjūčio','rugsėjo','spalio','lapkričio','gruodžio'];
+  const D=['sekmadienis','pirmadienis','antradienis','trečiadienis','ketvirtadienis','penktadienis','šeštadienis'];
+  const dv=document.getElementById('q-date').value;
+  if(dv){const d=new Date(dv+'T12:00');document.getElementById('q-date-lt').value=`${d.getFullYear()} m. ${M[d.getMonth()]} ${d.getDate()} d. (${D[d.getDay()]})`}else{document.getElementById('q-date-lt').value='Nenurodyta'}
+  document.getElementById('q-replyto').value=document.getElementById('q-email').value.trim();
+  const who=document.getElementById('q-name').value.trim();
+  f_subj.value='Nauja užklausa: '+(who||'klientas')+(dv?' · '+document.getElementById('q-date-lt').value.replace(/ \(.*\)/,''):'');
   if(live){try{localStorage.removeItem('rengora-bag')}catch(_){};return}
   e.preventDefault();
   const v=id=>document.getElementById(id).value.trim();
