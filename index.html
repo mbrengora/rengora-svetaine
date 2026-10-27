@@ -322,10 +322,13 @@ footer .logo{color:var(--on-dark);font-size:1.2rem}
           <p class="empty" id="empty">Užklausa tuščia. Pridėkite įrangą iš <a href="#katalogas">katalogo</a>.</p>
           <div class="total"><span>Preliminari suma<small>be PVM ir transporto</small></span><b id="total">0 €</b></div>
         </div>
-        <form id="q" name="uzklausa" method="POST" action="/aciu.html" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="uzklausa">
+        <form id="q" name="uzklausa" method="POST" action="https://formsubmit.co/mbrengora@gmail.com">
+          <input type="hidden" name="_subject" value="Nauja užklausa iš rengora.lt">
+          <input type="hidden" name="_next" value="https://rengora.lt/aciu.html">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="iranga" id="q-items">
-          <p hidden><label>Nepildykite<input name="bot-field"></label></p>
+          <p hidden><label>Nepildykite<input name="_honey"></label></p>
           <div class="r2">
             <label for="q-date">Renginio data<input id="q-date" name="data" type="date"></label>
             <label for="q-guests">Svečių skaičius<input id="q-guests" name="sveciai" type="number" min="1" placeholder="pvz. 80"></label>
@@ -429,7 +432,7 @@ function filter(c){fbtn.forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===c
 fbtn.forEach(b=>b.addEventListener('click',()=>filter(b.dataset.f)));
 document.querySelectorAll('[data-jump]').forEach(a=>a.addEventListener('click',()=>filter(a.dataset.jump)));
 
-const live=/rengora\.lt$|netlify\.app$/.test(location.hostname);
+const live=/rengora\.lt$|github\.io$/.test(location.hostname);
 document.getElementById('q').addEventListener('submit',e=>{
   render();
   if(live){try{localStorage.removeItem('rengora-bag')}catch(_){};return}
